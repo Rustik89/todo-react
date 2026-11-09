@@ -80,6 +80,9 @@ function Todo() {
     newTaskInputRef.current.focus()
   }, []);
 
+
+
+
   const clearSearchQuery = searchQuery.trim().toLowerCase()
   const filteredTasks = clearSearchQuery.length > 0
     ? tasks.filter(({title}) => title.toLowerCase().includes(clearSearchQuery))
@@ -104,9 +107,14 @@ function Todo() {
         done={tasks.filter(({ isDone }) => isDone).length}
         onDeleteAllButtonClick = {deleteAllTasks}
       />
-      <Button onClick={() => console.log('scroll')}>Перейти к 1-ой незавершенной задаче</Button>
+      <Button onClick={() => firstIncompleteTaskRef.current?.scrollIntoView({behavior: 'smooth'})}
+      >
+        Перейти к 1-ой незавершенной задаче
+      </Button>
       <TodoList
         tasks={tasks}
+        firstIncompleteTaskRef={firstIncompleteTaskRef}
+        firstIncompleteTaskId={firstIncompleteTaskId}
         filteredTasks={filteredTasks}
         onDeleteTaskButtonClick={deleteTask}
         onTaskCompleteChange={toggleTaskComplete}

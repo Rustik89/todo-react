@@ -6,6 +6,7 @@ function TodoItem(props) {
     id,
     title,
     isDone,
+    ref,
     onDeleteTaskButtonClick,
     onTaskCompleteChange
 
@@ -14,7 +15,7 @@ function TodoItem(props) {
 
 
   return (
-    <li className={`todo-item ${className}`}>
+    <li className={`todo-item ${className}`} ref={ref}>
       <input
         className="todo-item__checkbox"
         id={id}
