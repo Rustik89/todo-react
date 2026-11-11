@@ -1,13 +1,12 @@
-import AddTaskForm from "./components/AddTaskForm"
-import SearchTaskForm from "./components/SearchTaskForm"
-import Todo from "./components/Todo"
-import TodoInfo from "./components/TodoInfo"
-import TodoList from "./components/TodoList"
+import Todo from './components/Todo';
+import {TasksProvider} from "./context/TasksContext";
 
 const App = () => {
   return (
+    <TasksProvider>
       <Todo />
-  )
-}
+    </TasksProvider>
+  );
+};
 
-export default App
+export default App;
