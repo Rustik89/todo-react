@@ -1,16 +1,11 @@
-import { TasksContext } from '../context/TasksContext.jsx';
+
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import useTasksLocalStorage from './useTasksLocalStorage.js';
+
 
 const useTasks = () => {
-  const { savedTasks, saveTasks } = useTasksLocalStorage();
+ 
 
-  const [tasks, setTasks] = useState(
-    savedTasks ?? [
-      { id: 'task-1', title: 'Купить молоко', isDone: false },
-      { id: 'task-2', title: 'Купить PS5', isDone: true }
-    ]
-  );
+  const [tasks, setTasks] = useState([]);
 
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,10 +21,17 @@ const useTasks = () => {
 
   const deleteTask = useCallback(
     (taskId) => {
-      setTasks(tasks.filter((task) => task.id !== taskId));
-    },
+      
+    
+    fetch(`http://localhost:3001/tasks/${taskId}`, {
+      method: 'DELETE'
+    })
+      .then(() => {
+        setTasks(tasks.filter((task) => task.id !== taskId));
+      })
     [tasks]
-  );
+});
+  
 
   const toggleTaskComplete = useCallback(
     (taskId, isDone) => {
@@ -47,23 +49,36 @@ const useTasks = () => {
 
   const addTask = useCallback((title) => {
     const newTask = {
-      id: crypto?.randomUUID() ?? Date.now().toString(),
       title,
       idDone: false
     };
 
-    setTasks((prevTasks) => [...prevTasks, newTask]);
-    setNewTaskTitle('');
-    setSearchQuery('');
-    newTaskInputRef.current.focus();
+    fetch('http://localhost:3001/tasks', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newTask)
+    })
+      .then((response) => response.json())
+      .then((addedTask) => {
+        setTasks((prevTasks) => [...prevTasks, addTask]);
+        setNewTaskTitle('');
+        setSearchQuery('');
+        newTaskInputRef.current.focus();
+      })
+
+    
   }, []);
 
-  useEffect(() => {
-    saveTasks(tasks);
-  }, [tasks]);
+
 
   useEffect(() => {
     newTaskInputRef.current.focus();
+
+    fetch('http://localhost:3001/tasks')
+      .then((response) => response.json() )
+      .then(setTasks)
   }, []);
 
   const filteredTasks = useMemo(() => {
