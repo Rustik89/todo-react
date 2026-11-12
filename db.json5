@@ -1,1 +1,1 @@
-{tasks:[{id:'task-1',title:'Купить молоко',isDone:false},{id:'task-2',title:'Купить PS5',isDone:true},{title:'Изучить Vue',idDone:false,id:'P5KVu82qVs0'}],$schema:'./node_modules/json-server/schema.json'}
+{tasks:[],$schema:'./node_modules/json-server/schema.json'}
